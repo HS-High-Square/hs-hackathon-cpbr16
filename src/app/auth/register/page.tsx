@@ -1,14 +1,14 @@
-import LoginForm from "@/components/LoginForm";
+import Title from "@/components/Title";
+import RegisterForm from "./RegisterForm";
+import Page from "@/components/Page";
 
 export default function Login() {
   return (
-    <div className="">
-      <h1 className="text-4xl mx-8 mt-8">
-        <b>Login</b>
-      </h1>
-      <div className="flex-1 p-20">
-        <LoginForm />
+    <Page>
+      <Title>Cadastrar</Title>
+      <div className="mx-auto px-10 max-w-[800px] flex w-full">
+        <RegisterForm />
       </div>
-    </div>
+    </Page>
   );
 }
