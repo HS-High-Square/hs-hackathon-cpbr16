@@ -28,7 +28,7 @@ export default function Footer(props: IFooterProps) {
           onClick={() => {
             localStorage.removeItem("userdata");
             setUserdata(null);
-            router.push("/");
+            router.push("/auth/login");
           }}
         >
           Sair

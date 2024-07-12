@@ -9,17 +9,17 @@ import { usePathname, useRouter } from "next/navigation";
 export default function Page(props: React.PropsWithChildren) {
   const { userdata, setUserdata } = useAuth();
   const router = useRouter();
-  const pathname = usePathname()
+  const pathname = usePathname();
 
   useEffect(() => {
-    if (!userdata) {
-      const ud = localStorage.getItem("userdata");
-      if (ud) {
-        setUserdata(ud);
-        router.push(pathname);
-      } else {
-        router.push("/auth/register");
-      }
+    const inLoggedArea = ["/home", "/map"].includes(pathname);
+    const ud = localStorage.getItem("userdata");
+    setUserdata(ud);
+    if (inLoggedArea && !ud) {
+      router.replace("/auth/register");
+    }
+    if (!inLoggedArea && ud) {
+      router.replace("/home");
     }
   });
 

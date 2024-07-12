@@ -25,6 +25,10 @@ import { PhoneInput } from "@/components/PhoneInput";
 import { Input } from "@/components/ui/input";
 import { isValidPhoneNumber } from "react-phone-number-input";
 import { useRouter } from "next/navigation";
+import { Categories } from "@/dtos/categories";
+import { IRegisterData } from "@/app/api/auth/register/route";
+import { useState } from "react";
+import { useAuth } from "@/providers/AuthProvider";
 
 const form = z.object({
   phone: z
@@ -38,22 +42,10 @@ const form = z.object({
 
 export type TRegisterForm = z.infer<typeof form>;
 
-const categories = [
-  {
-    value: "robotica",
-    label: "Robótica",
-  },
-  {
-    value: "ia",
-    label: "Inteligência Artificial",
-  },
-  {
-    value: "nuvem",
-    label: "Nuvem",
-  },
-];
-
 export default function RegisterForm() {
+  const [error, setError] = useState<string | null>();
+  const { userdata, setUserdata } = useAuth();
+
   const router = useRouter();
 
   const multiForm = useForm<TRegisterForm>({
@@ -65,8 +57,26 @@ export default function RegisterForm() {
     },
   });
 
-  const onSubmit = (data: TRegisterForm) => {
-    localStorage.setItem("userdata", JSON.stringify(data));
+  const onSubmit = async (data: TRegisterForm) => {
+    setError(null);
+
+    const body: IRegisterData = {
+      email: data.email,
+      phone: data.phone,
+      interests: data.categories,
+    };
+    const res = await fetch("/api/auth/register", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    if (res.status !== 200) {
+      setError("Erro ao criar usuário.");
+      return;
+    }
+
+    const json = await res.json();
+    localStorage.setItem("userdata", JSON.stringify(json));
 
     router.push("/home?from=register");
   };
@@ -126,7 +136,7 @@ export default function RegisterForm() {
                 </MultiSelectorTrigger>
                 <MultiSelectorContent>
                   <MultiSelectorList>
-                    {categories.map((category) => (
+                    {Categories.map((category) => (
                       <MultiSelectorItem
                         key={category.value}
                         value={category.value}
@@ -145,6 +155,7 @@ export default function RegisterForm() {
           )}
         />
         <Button type="submit">Cadastrar</Button>
+        {error && <h1 className="text-red-500">{error}</h1>}
       </form>
     </Form>
   );
