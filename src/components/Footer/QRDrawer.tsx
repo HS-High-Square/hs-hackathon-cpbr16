@@ -70,7 +70,7 @@ export default function QRDrawer() {
                 setError(null);
 
                 const res = await scanQR(
-                  userdata,
+                  JSON.parse(userdata),
                   result[0].rawValue,
                   setIsOpen
                 );

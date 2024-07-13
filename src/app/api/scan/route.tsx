@@ -1,5 +1,5 @@
 import db from "@/connectors/mongodb";
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 import { Stand } from "@/dtos/stand";
 import { User } from "@/dtos/user";
 
@@ -19,9 +19,10 @@ export async function GET(req: Request) {
     );
   }
 
-  return Response.redirect(
-    `http://localhost:3000/auth/register?from=scan&id=${standID}`
-  );
+  let ourURL = new URL(req.url);
+  ourURL.pathname = `/auth/register`;
+  ourURL.search = `from=scan&id=${standID}`;
+  return Response.redirect(ourURL);
 }
 
 export async function POST(req: Request) {
@@ -38,24 +39,30 @@ export async function POST(req: Request) {
 
   let reqData: IScanRequest | null = null;
   try {
-    reqData = JSON.parse(await req.json());
+    reqData = await req.json();
     if (!reqData) throw new Error("No request data.");
   } catch (e) {
-    return Response.redirect(
-      `http://localhost:3000/auth/register?from=scan&id=${standID}`
-    );
+    console.warn("Redirecting...");
+
+    let ourURL = new URL(req.url);
+    ourURL.pathname = `/auth/register`;
+    ourURL.search = `from=scan&id=${standID}`;
+    return Response.redirect(ourURL);
   }
 
   // If user already visited dont visit again
   const user = await db?.collection("users").findOne({ email: reqData.email });
   if (!user) return Response.json({ status: "UNAUTHORIZED" }, { status: 403 });
+  console.log("User exists. Proceeding.");
 
   if (user.visited.includes(`${standID}`)) {
+    console.warn("User already scanned QR code.");
     return Response.json({ status: "NO_CHANGE" }, { status: 408 });
   }
 
   const stand = await db?.collection("campus").findOne({ id: standID });
   if (!stand) {
+    console.error("Stand not found.");
     return Response.json({}, { status: 404 });
   }
 

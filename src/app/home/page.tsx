@@ -34,6 +34,19 @@ export default function Home() {
 
   useEffect(() => {
     async function getVisits() {
+      if (searchParams.has("from", "scan")) {
+        const url = new URL(document.location.toString());
+        url.pathname = `/api/scan`;
+        url.search = `id=${searchParams.get("id")}`;
+        await scanQR(
+          JSON.parse(localStorage.getItem("userdata") as string),
+          url.toString(),
+          () => {}
+        );
+
+        router.replace("/home");
+      }
+
       const visits = await fetch(
         `/api/stands/visited?email=${
           JSON.parse(localStorage.getItem("userdata") as string).email
@@ -57,18 +70,8 @@ export default function Home() {
       setStands({ visited: k, unvisited: l });
     }
 
-    if (searchParams.has("from", "scan")) {
-      scanQR(
-        JSON.parse(localStorage.getItem("userdata") as string),
-        `http://localhost/api/scan?id=${searchParams.get("id")}`,
-        () => {}
-      );
-
-      router.replace("/home");
-    }
-
     getVisits();
-  });
+  }, []);
 
   if (userdata) {
     return (
