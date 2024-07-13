@@ -1,5 +1,5 @@
 import db from "@/connectors/mongodb";
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 import { User } from "@/dtos/user";
 
 export interface IRegisterData {
@@ -9,12 +9,12 @@ export interface IRegisterData {
 }
 
 export async function POST(req: Request) {
-  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({})
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});
   const reqData: IRegisterData = await req.json();
 
   const user = await db?.collection("users").findOne({ email: reqData.email });
   if (!user) {
-    db?.collection("users").insertOne(reqData);
+    db?.collection("users").insertOne({ ...reqData, visited: [] });
   }
 
   const res: User = {
