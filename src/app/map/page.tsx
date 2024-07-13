@@ -35,7 +35,7 @@ export default function Map() {
     }
 
     getMapBase();
-  }, []);
+  }, [sendMessage]);
 
   if (userdata) {
     return (

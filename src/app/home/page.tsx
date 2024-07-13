@@ -80,7 +80,7 @@ export default function Home() {
     }
 
     getVisits();
-  }, []);
+  }, [referrer, router, searchParams]);
 
   if (userdata) {
     return (

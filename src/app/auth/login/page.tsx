@@ -12,7 +12,7 @@ export default function Login() {
 
   useEffect(() => {
     setSp(appendedSearchParams());
-  });
+  }, [sp]);
 
   return (
     <Page>

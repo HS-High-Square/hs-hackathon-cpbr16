@@ -12,7 +12,7 @@ export default function Register() {
 
   useEffect(() => {
     setSp(appendedSearchParams());
-  });
+  }, [sp]);
 
   return (
     <Page>

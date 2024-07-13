@@ -92,6 +92,7 @@ export async function POST(req: Request) {
     categories: stand.categories,
     image: stand.image,
     visitors: stand.visitors + 1,
+    percent: stand.percent,
   };
 
   return Response.json(res);
