@@ -1,4 +1,5 @@
 import db from "@/connectors/mongodb";
+export const dynamic = 'force-dynamic'
 
 export async function GET(req: Request) {
   if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});

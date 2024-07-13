@@ -1,4 +1,5 @@
 import db from "@/connectors/mongodb";
+export const dynamic = 'force-dynamic'
 import { Stand } from "@/dtos/stand";
 import { User } from "@/dtos/user";
 

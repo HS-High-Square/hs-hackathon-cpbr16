@@ -1,4 +1,5 @@
 import db from "@/connectors/mongodb";
+export const dynamic = 'force-dynamic'
 import { User } from "@/dtos/user";
 
 export interface IRegisterData {
