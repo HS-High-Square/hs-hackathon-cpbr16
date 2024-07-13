@@ -29,6 +29,7 @@ import { Categories } from "@/dtos/categories";
 import { IRegisterData } from "@/app/api/auth/register/route";
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import appendedSearchParams from "@/lib/appendedSearchParams";
 
 const form = z.object({
   phone: z
@@ -78,7 +79,9 @@ export default function RegisterForm() {
     const json = await res.json();
     localStorage.setItem("userdata", JSON.stringify(json));
 
-    router.push("/home?from=register");
+    router.push(
+      `/home${appendedSearchParams([{ name: "referrer", value: "register" }])}`
+    );
   };
 
   return (

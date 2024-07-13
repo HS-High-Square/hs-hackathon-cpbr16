@@ -14,6 +14,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import appendedSearchParams from "@/lib/appendedSearchParams";
+import { sleep } from "@/lib/utils";
 import { useAuth } from "@/providers/AuthProvider";
 import { BadgeCheck, Router } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -26,7 +27,7 @@ interface IStandStats {
 
 export default function Home() {
   const searchParams = useSearchParams();
-  const from = searchParams.get("from");
+  const referrer = searchParams.get("referrer");
   const router = useRouter();
   const { userdata } = useAuth();
 
@@ -44,6 +45,14 @@ export default function Home() {
           () => {}
         );
 
+        if (referrer) {
+          await sleep(3000);
+        }
+        router.replace("/home");
+      }
+
+      if (referrer) {
+        await sleep(3000);
         router.replace("/home");
       }
 
@@ -76,7 +85,7 @@ export default function Home() {
   if (userdata) {
     return (
       <Page>
-        {from === "register" && (
+        {referrer === "register" && (
           <Alert className="dark:bg-green-700 bg-green-100 border-green-500 rounded-none">
             <BadgeCheck className="h-4 w-4" />
             <AlertTitle>Sucesso!</AlertTitle>
@@ -94,7 +103,7 @@ export default function Home() {
                   <span className="hover:underline">Estandes visitados</span>
                 </div>
               </AccordionTrigger>
-              <AccordionContent className="flex gap-2 flex-col">
+              <AccordionContent className="flex gap-2 flex-col max-h-[150px] overflow-y-auto">
                 {stands?.visited.map((v, i) => (
                   <StandView {...v} key={i} />
                 ))}
