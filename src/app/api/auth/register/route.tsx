@@ -21,6 +21,7 @@ export async function POST(req: Request) {
     email: reqData.email,
     phone: reqData.phone,
     interests: reqData.interests,
+    visited: user?.visited || [],
   };
 
   return Response.json(res);

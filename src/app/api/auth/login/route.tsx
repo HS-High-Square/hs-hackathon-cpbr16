@@ -1,5 +1,5 @@
 import db from "@/connectors/mongodb";
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 import { User } from "@/dtos/user";
 
 export interface ILoginData {
@@ -7,7 +7,7 @@ export interface ILoginData {
 }
 
 export async function POST(req: Request) {
-  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({})
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});
   const reqData: ILoginData = await req.json();
 
   const user = await db?.collection("users").findOne({ email: reqData.email });
@@ -19,6 +19,7 @@ export async function POST(req: Request) {
     email: user.email,
     phone: user.phone,
     interests: user.interests,
+    visited: user.visited,
   };
 
   return Response.json(res, { status: 200 });
