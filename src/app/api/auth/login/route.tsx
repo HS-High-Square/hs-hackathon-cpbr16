@@ -6,9 +6,10 @@ export interface ILoginData {
 }
 
 export async function POST(req: Request) {
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({})
   const reqData: ILoginData = await req.json();
 
-  const user = await db.collection("users").findOne({ email: reqData.email });
+  const user = await db?.collection("users").findOne({ email: reqData.email });
   if (!user) {
     return Response.json({}, { status: 403 });
   }

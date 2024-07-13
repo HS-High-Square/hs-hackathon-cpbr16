@@ -5,6 +5,7 @@ import { User } from "@/dtos/user";
 export interface IScanRequest extends User {}
 
 export async function GET(req: Request) {
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});
   const searchParams = new URL(req.url).searchParams;
   const standID = searchParams.get("id");
 
@@ -23,6 +24,7 @@ export async function GET(req: Request) {
 }
 
 export async function POST(req: Request) {
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});
   const searchParams = new URL(req.url).searchParams;
   const standID = searchParams.get("id");
 
@@ -44,19 +46,19 @@ export async function POST(req: Request) {
   }
 
   // If user already visited dont visit again
-  const user = await db.collection("users").findOne({ email: reqData.email });
+  const user = await db?.collection("users").findOne({ email: reqData.email });
   if (!user) return Response.json({ status: "UNAUTHORIZED" }, { status: 403 });
 
   if (user.visited.includes(`${standID}`)) {
     return Response.json({ status: "NO_CHANGE" }, { status: 408 });
   }
 
-  const stand = await db.collection("campus").findOne({ id: standID });
+  const stand = await db?.collection("campus").findOne({ id: standID });
   if (!stand) {
     return Response.json({}, { status: 404 });
   }
 
-  db.collection("users").updateOne(
+  db?.collection("users").updateOne(
     { email: reqData.email },
     {
       $set: {
@@ -66,7 +68,7 @@ export async function POST(req: Request) {
     { upsert: true }
   );
 
-  db.collection("campus").updateOne(
+  db?.collection("campus").updateOne(
     { id: standID },
     {
       $set: {

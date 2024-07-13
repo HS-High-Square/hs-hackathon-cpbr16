@@ -8,11 +8,12 @@ export interface IRegisterData {
 }
 
 export async function POST(req: Request) {
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({})
   const reqData: IRegisterData = await req.json();
 
-  const user = await db.collection("users").findOne({ email: reqData.email });
+  const user = await db?.collection("users").findOne({ email: reqData.email });
   if (!user) {
-    db.collection("users").insertOne(reqData);
+    db?.collection("users").insertOne(reqData);
   }
 
   const res: User = {

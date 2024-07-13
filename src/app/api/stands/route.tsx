@@ -1,10 +1,11 @@
 import db from "@/connectors/mongodb";
 
 export async function GET() {
-  const stands = await db.collection("campus").find({});
+  if (process.env.BUILD_ENVIRONMENT === "local") return Response.json({});
+  const stands = await db?.collection("campus").find({});
 
   const o: any = {};
-  (await stands.toArray()).forEach((s) => {
+  (await stands!.toArray()).forEach((s) => {
     o[s.id] = {
       name: s.name,
       categories: s.categories,
