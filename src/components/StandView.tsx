@@ -13,7 +13,7 @@ export default function StandView(props: IStandViewProps) {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center gap-4">
-        <img src={props.image} className="h-10 rounded-md"></img>
+        <img src={props.image} className="h-10 rounded-md w-20 aspect-auto"></img>
         <h1>
           <b>{props.name}</b> ({props.visitors} Visitante
           {props.visitors == 1 ? "" : "s"})

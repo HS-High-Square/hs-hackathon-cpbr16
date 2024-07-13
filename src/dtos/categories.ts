@@ -1,14 +1,56 @@
 export const Categories = [
   {
-    value: "robotica",
-    label: "Robótica",
+    value: "tech",
+    label: "Tecnologia",
   },
+
   {
-    value: "ia",
-    label: "Inteligência Artificial",
+    value: "edu",
+    label: "Ensino",
   },
+
   {
-    value: "nuvem",
-    label: "Nuvem",
+    value: "games",
+    label: "Games",
+  },
+
+  {
+    value: "sim",
+    label: "Simulação",
+  },
+
+  {
+    value: "drones",
+    label: "Drones",
+  },
+
+  {
+    value: "mkt",
+    label: "Marketing",
+  },
+
+  {
+    value: "bots",
+    label: "Robôs",
+  },
+
+  {
+    value: "printer",
+    label: "Printer Chef",
+  },
+
+  {
+    value: "inno",
+    label: "Inovação",
+  },
+
+  {
+    value: "wks",
+    label: "Workshops",
+  },
+
+  {
+    value: "talks",
+    label: "Palestras",
   },
 ];

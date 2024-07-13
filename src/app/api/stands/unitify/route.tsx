@@ -1,3 +1,4 @@
+import { Stand, StandList, StandUnity } from "@/dtos/stand";
 import { User } from "@/dtos/user";
 
 export async function POST(req: Request) {
@@ -5,15 +6,16 @@ export async function POST(req: Request) {
   ourURL.pathname = `/api/stands`;
 
   const standsReq = await fetch(ourURL);
-  const standsJson = await standsReq.json();
+  const standsJson: StandList = await standsReq.json();
 
   const user: User = await req.json();
 
-  const mapBases = Object.keys(standsJson).map((k) => ({
+  const mapBases: StandUnity[] = Object.keys(standsJson).map((k) => ({
     baseName: standsJson[k].name,
     baseFilter: standsJson[k].categories[0],
     peopleAmount: standsJson[k].visitors,
     baseID: parseInt(k),
+    baseImageURL: standsJson[k].image,
     basePercent: 0,
     completed: user.visited.find((e) => e == k) === undefined ? false : true,
   }));
