@@ -6,11 +6,7 @@ export async function GET() {
     email: "lucas@highsquare.com.br",
     phone: "+5543988279958",
     interests: ["ai"],
-    visited: [
-      {
-        standID: "01",
-      },
-    ],
+    visited: [],
   });
 
   await db.collection("campus").insertMany(stands);

@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import { ILoginData } from "@/app/api/auth/login/route";
 import { useState } from "react";
 import { useAuth } from "@/providers/AuthProvider";
+import appendedSearchParams from "@/lib/appendedSearchParams";
 
 const form = z.object({
   email: z
@@ -55,7 +56,9 @@ export default function RegisterForm() {
     const json = await res.json();
     localStorage.setItem("userdata", JSON.stringify(json));
 
-    router.push("/home?from=login");
+    router.push(
+      `/home${appendedSearchParams([{ name: "from", value: "login" }])}`
+    );
   };
 
   return (
